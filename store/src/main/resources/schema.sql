@@ -152,3 +152,9 @@ CREATE TABLE IF NOT EXISTS recommend_product (
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_recommend_product FOREIGN KEY (product_id) REFERENCES product(id)
 ) COMMENT='推荐商品表';
+
+
+-- 默认管理员账号：admin / Admin@123（BCrypt 加密）
+INSERT INTO `user` (username, password, phone, email, role, status)
+SELECT 'admin', '$2a$10$5B2mh9RzGQjQJfQn8hljIu2Sh4fMcf49M/5xULixYzA7fY4Hi9f.e', '13800000000', 'admin@crafts.com', 'admin', 1
+WHERE NOT EXISTS (SELECT 1 FROM `user` WHERE username = 'admin');

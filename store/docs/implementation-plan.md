@@ -104,3 +104,30 @@ src/main/java/com/crafts/platform
 2. 第2周：完成用户/商品/购物车模块
 3. 第3周：完成订单流程与商家后台
 4. 第4周：完成定制与管理员运营模块，联调测试
+
+## 8. 4.1 用户注册登录模块落地说明（已实现）
+### 8.1 已实现能力
+- 注册：`GET /auth/register` + `POST /auth/register`
+- 登录：`GET /auth/login` + `POST /auth/login`
+- 退出：`GET /auth/logout`
+- 权限控制：
+  - 未登录访问 `/home`、`/merchant/**`、`/admin/**` 会被拦截并跳转登录页
+  - 商家后台仅 `merchant` 角色访问
+  - 管理员后台仅 `admin` 角色访问
+
+### 8.2 关键实现点
+1. 用户名唯一性校验：注册时先按用户名查询，存在则拒绝注册。
+2. 密码安全：使用 `BCryptPasswordEncoder` 加密存储。
+3. Session 登录态：登录成功后写入 `userId`、`role`、`username`。
+4. 角色分流：
+   - `consumer` -> `/home`
+   - `merchant` -> `/merchant/dashboard`
+   - `admin` -> `/admin/dashboard`
+
+### 8.3 涉及文件
+- `controller/AuthController.java`
+- `service/impl/UserServiceImpl.java`
+- `mapper/UserMapper.java` + `mapper/UserMapper.xml`
+- `interceptor/LoginInterceptor.java` + `RoleInterceptor.java`
+- `config/WebMvcConfig.java` + `SecurityBeanConfig.java`
+- `templates/login.html`、`register.html`

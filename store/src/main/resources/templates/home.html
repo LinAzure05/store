@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+<h2>消费者首页</h2>
+<p>欢迎你，<span th:text="${session.username}"></span></p>
+<a th:href="@{/auth/logout}">退出登录</a>
+</body>
+</html>
