@@ -7,7 +7,6 @@ import com.crafts.platform.exception.BizException;
 import com.crafts.platform.mapper.UserMapper;
 import com.crafts.platform.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,7 +17,6 @@ import java.util.Locale;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void register(RegisterRequest request) {
@@ -34,9 +32,8 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword());
         user.setPhone(request.getPhone());
-        user.setEmail(request.getEmail());
         user.setRole(normalizeRegisterRole(request.getRole()));
         user.setStatus(1);
 
@@ -56,7 +53,7 @@ public class UserServiceImpl implements UserService {
         if (user.getStatus() != null && user.getStatus() == 0) {
             throw new BizException("账号已被禁用");
         }
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!request.getPassword().equals(user.getPassword())) {
             throw new BizException("用户名或密码错误");
         }
         user.setRole(normalizeSystemRole(user.getRole()));

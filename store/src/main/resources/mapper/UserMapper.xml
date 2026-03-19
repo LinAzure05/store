@@ -26,7 +26,7 @@
     </select>
 
     <insert id="insert" parameterType="com.crafts.platform.entity.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `user` (username, password, phone, email, role, status)
-        VALUES (#{username}, #{password}, #{phone}, #{email}, #{role}, #{status})
+        INSERT INTO `user` (username, password, phone, role, status)
+        VALUES (#{username}, #{password}, #{phone}, #{role}, #{status})
     </insert>
 </mapper>

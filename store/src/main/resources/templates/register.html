@@ -121,7 +121,6 @@
         1）用户名 4~20 位，建议使用字母+数字；<br>
         2）密码 6~20 位，建议包含字母、数字和符号；<br>
         3）手机号需为大陆手机号格式（11 位）；<br>
-        4）邮箱需为有效邮箱格式。
     </div>
 
     <form th:action="@{/auth/register}" th:object="${registerForm}" method="post">
@@ -136,10 +135,6 @@
         <div class="form-item">
             <label for="phone">手机号</label>
             <input id="phone" class="input" type="text" th:field="*{phone}" placeholder="请输入手机号">
-        </div>
-        <div class="form-item">
-            <label for="email">邮箱</label>
-            <input id="email" class="input" type="text" th:field="*{email}" placeholder="请输入邮箱">
         </div>
         <div class="form-item">
             <label for="role">注册身份</label>
