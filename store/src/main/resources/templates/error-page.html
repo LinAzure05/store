@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面异常</title>
+    <style>
+        body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #fff7ed; color: #4a2a0b; }
+        .wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .card {
+            max-width: 520px; width: 100%; background: #fff; border-radius: 14px; border: 1px solid #ffd3a8;
+            padding: 28px; box-shadow: 0 10px 26px rgba(247, 103, 7, .16);
+        }
+        h2 { color: #d9480f; margin-bottom: 10px; }
+        .code { font-size: 14px; color: #9c6644; margin-bottom: 8px; }
+        .msg { background: #fff4e6; border: 1px solid #ffd8a8; border-radius: 8px; padding: 10px 12px; }
+        a { display: inline-block; margin-top: 16px; color: #fff; background: #f76707; padding: 10px 14px; border-radius: 8px; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="card">
+        <h2>页面暂时不可用</h2>
+        <div class="code">状态码：<span th:text="${statusCode}"></span></div>
+        <div class="msg" th:text="${errorMessage}"></div>
+        <a th:href="@{/auth/login}">返回登录页</a>
+    </div>
+</div>
+</body>
+</html>
