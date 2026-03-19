@@ -37,6 +37,7 @@ public class AuthController {
                         HttpSession session,
                         Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "请输入用户名和密码");
             return "login";
         }
 
@@ -45,9 +46,12 @@ public class AuthController {
             session.setAttribute("userId", user.getId());
             session.setAttribute("role", user.getRole());
             session.setAttribute("username", user.getUsername());
-            return "redirect:" + resolveDashboard(user.getRole());
+            return "redirect:/dashboard";
         } catch (BizException ex) {
             model.addAttribute("error", ex.getMessage());
+            return "login";
+        } catch (Exception ex) {
+            model.addAttribute("error", "登录失败，请稍后重试");
             return "login";
         }
     }
@@ -73,6 +77,9 @@ public class AuthController {
         } catch (BizException ex) {
             model.addAttribute("error", ex.getMessage());
             return "register";
+        } catch (Exception ex) {
+            model.addAttribute("error", "注册失败，请稍后重试");
+            return "register";
         }
     }
 
@@ -80,15 +87,5 @@ public class AuthController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/auth/login";
-    }
-
-    private String resolveDashboard(String role) {
-        if ("admin".equals(role)) {
-            return "/admin/dashboard";
-        }
-        if ("merchant".equals(role)) {
-            return "/merchant/dashboard";
-        }
-        return "/home";
     }
 }

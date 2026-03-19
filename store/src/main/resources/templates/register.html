@@ -94,6 +94,17 @@
         }
 
         .extra a { color: var(--orange-5); text-decoration: none; font-weight: 700; }
+
+        .tips {
+            margin-bottom: 14px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: #fff4e6;
+            border: 1px dashed #ffb36d;
+            color: #9c6644;
+            font-size: 13px;
+            line-height: 1.7;
+        }
     </style>
 </head>
 <body>
@@ -105,14 +116,22 @@
 
     <p th:if="${error}" th:text="${error}" class="alert"></p>
 
+    <div class="tips">
+        账号与密码要求：<br>
+        1）用户名 4~20 位，建议使用字母+数字；<br>
+        2）密码 6~20 位，建议包含字母、数字和符号；<br>
+        3）手机号需为大陆手机号格式（11 位）；<br>
+        4）邮箱需为有效邮箱格式。
+    </div>
+
     <form th:action="@{/auth/register}" th:object="${registerForm}" method="post">
         <div class="form-item">
             <label for="username">用户名</label>
-            <input id="username" class="input" type="text" th:field="*{username}" placeholder="4~20位用户名">
+            <input id="username" class="input" type="text" th:field="*{username}" placeholder="4~20位（字母/数字）">
         </div>
         <div class="form-item">
             <label for="password">密码</label>
-            <input id="password" class="input" type="password" th:field="*{password}" placeholder="6~20位密码">
+            <input id="password" class="input" type="password" th:field="*{password}" placeholder="6~20位，建议字母+数字+符号">
         </div>
         <div class="form-item">
             <label for="phone">手机号</label>
