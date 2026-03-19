@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家后台</title>
+    <style>
+        body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #fff7ed; color: #4a2a0b; }
+        .header {
+            background: linear-gradient(90deg, #ff922b, #f76707);
+            color: #fff;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .panel { padding: 24px; }
+        .card {
+            background: #fff;
+            border: 1px solid #ffd3a8;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+        .tag { display: inline-block; background: #ffe8cc; color: #d9480f; padding: 4px 8px; border-radius: 8px; font-size: 12px; }
+        .btn { color: #fff; text-decoration: none; background: #f76707; padding: 10px 14px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <strong>商家后台</strong>
+    <div>
+        <span>欢迎，<b th:text="${session.username}"></b></span>
+        <a class="btn" th:href="@{/auth/logout}">退出登录</a>
+    </div>
+</div>
+<div class="panel">
+    <div class="card">
+        <h3>店铺运营概览 <span class="tag">Merchant</span></h3>
+        <p>这里可管理商品、处理订单、跟进定制需求。</p>
+    </div>
+</div>
+</body>
+</html>
