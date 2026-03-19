@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Locale;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -20,17 +22,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(RegisterRequest request) {
-        User existing = userMapper.findByUsername(request.getUsername());
+        String username = request.getUsername() == null ? null : request.getUsername().trim();
+        if (!StringUtils.hasText(username)) {
+            throw new BizException("用户名不能为空");
+        }
+
+        User existing = userMapper.findByUsername(username);
         if (existing != null) {
             throw new BizException("用户名已存在");
         }
 
         User user = new User();
-        user.setUsername(request.getUsername());
+        user.setUsername(username);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhone(request.getPhone());
         user.setEmail(request.getEmail());
-        user.setRole(normalizeRole(request.getRole()));
+        user.setRole(normalizeRegisterRole(request.getRole()));
         user.setStatus(1);
 
         int rows = userMapper.insert(user);
@@ -41,7 +48,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(LoginRequest request) {
-        User user = userMapper.findByUsername(request.getUsername());
+        String username = request.getUsername() == null ? null : request.getUsername().trim();
+        User user = userMapper.findByUsername(username);
         if (user == null) {
             throw new BizException("用户名或密码错误");
         }
@@ -51,15 +59,25 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new BizException("用户名或密码错误");
         }
+        user.setRole(normalizeSystemRole(user.getRole()));
         return user;
     }
 
-    private String normalizeRole(String role) {
+    private String normalizeRegisterRole(String role) {
+        String normalized = normalizeSystemRole(role);
+        if ("merchant".equals(normalized)) {
+            return "merchant";
+        }
+        return "consumer";
+    }
+
+    private String normalizeSystemRole(String role) {
         if (!StringUtils.hasText(role)) {
             return "consumer";
         }
-        if ("merchant".equals(role) || "admin".equals(role) || "consumer".equals(role)) {
-            return role;
+        String normalized = role.trim().toLowerCase(Locale.ROOT);
+        if ("merchant".equals(normalized) || "admin".equals(normalized) || "consumer".equals(normalized)) {
+            return normalized;
         }
         return "consumer";
     }

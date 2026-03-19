@@ -18,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/home", "/merchant/**", "/admin/**")
+                .addPathPatterns("/home", "/dashboard", "/merchant/**", "/admin/**")
                 .excludePathPatterns("/auth/**", "/error", "/forbidden", "/css/**", "/js/**", "/images/**");
 
         registry.addInterceptor(roleInterceptor)

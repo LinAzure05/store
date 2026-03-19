@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,8 +23,11 @@ public class AuthController {
     private final UserService userService;
 
     @GetMapping("/auth/login")
-    public String loginPage(Model model) {
+    public String loginPage(@RequestParam(value = "registered", required = false) Integer registered, Model model) {
         model.addAttribute("loginForm", new LoginRequest());
+        if (registered != null && registered == 1) {
+            model.addAttribute("success", "注册成功，请登录");
+        }
         return "login";
     }
 
@@ -41,19 +45,11 @@ public class AuthController {
             session.setAttribute("userId", user.getId());
             session.setAttribute("role", user.getRole());
             session.setAttribute("username", user.getUsername());
+            return "redirect:" + resolveDashboard(user.getRole());
         } catch (BizException ex) {
             model.addAttribute("error", ex.getMessage());
             return "login";
         }
-
-        String role = (String) session.getAttribute("role");
-        if ("admin".equals(role)) {
-            return "redirect:/admin/dashboard";
-        }
-        if ("merchant".equals(role)) {
-            return "redirect:/merchant/dashboard";
-        }
-        return "redirect:/home";
     }
 
     @GetMapping("/auth/register")
@@ -67,14 +63,13 @@ public class AuthController {
                            BindingResult bindingResult,
                            Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "请检查输入内容后重新提交");
             return "register";
         }
 
         try {
             userService.register(registerRequest);
-            model.addAttribute("success", "注册成功，请登录");
-            model.addAttribute("loginForm", new LoginRequest());
-            return "login";
+            return "redirect:/auth/login?registered=1";
         } catch (BizException ex) {
             model.addAttribute("error", ex.getMessage());
             return "register";
@@ -85,5 +80,15 @@ public class AuthController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/auth/login";
+    }
+
+    private String resolveDashboard(String role) {
+        if ("admin".equals(role)) {
+            return "/admin/dashboard";
+        }
+        if ("merchant".equals(role)) {
+            return "/merchant/dashboard";
+        }
+        return "/home";
     }
 }

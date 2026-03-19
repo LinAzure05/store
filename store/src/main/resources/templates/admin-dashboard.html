@@ -2,11 +2,46 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理员后台</title>
+    <style>
+        body { margin: 0; font-family: "Microsoft YaHei", sans-serif; background: #fff7ed; color: #4a2a0b; }
+        .header {
+            background: linear-gradient(90deg, #ff922b, #f76707);
+            color: #fff;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .content { padding: 24px; }
+        .card {
+            background: #fff;
+            border: 1px solid #ffd3a8;
+            border-radius: 14px;
+            padding: 20px;
+        }
+        .btn { color: #fff; text-decoration: none; background: #f76707; padding: 10px 14px; border-radius: 8px; }
+        ul { margin-top: 10px; line-height: 1.9; }
+    </style>
 </head>
 <body>
-<h2>管理员后台</h2>
-<p>欢迎管理员：<span th:text="${session.username}"></span></p>
-<a th:href="@{/auth/logout}">退出登录</a>
+<div class="header">
+    <strong>管理员后台</strong>
+    <div>
+        <span>欢迎，<b th:text="${session.username}"></b></span>
+        <a class="btn" th:href="@{/auth/logout}">退出登录</a>
+    </div>
+</div>
+<div class="content">
+    <div class="card">
+        <h3>平台运营管理</h3>
+        <ul>
+            <li>用户管理（启用/禁用）</li>
+            <li>公告与广告管理</li>
+            <li>推荐商品维护</li>
+        </ul>
+    </div>
+</div>
 </body>
 </html>
