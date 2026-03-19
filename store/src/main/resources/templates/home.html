@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>消费者首页</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #fff7ed;
+            color: #4a2a0b;
+        }
+        .header {
+            background: linear-gradient(90deg, #ff922b, #f76707);
+            color: #fff;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .container { padding: 24px; }
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #ffd3a8;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background: #f76707;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <strong>消费者中心</strong>
+    <div>
+        <span>你好，<b th:text="${session.username}"></b></span>
+        <a class="btn" th:href="@{/auth/logout}">退出登录</a>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <h3>欢迎来到手工艺品交易平台</h3>
+        <p>你可以浏览商品、加入购物车、下单并查看订单状态。</p>
+    </div>
+</div>
+</body>
+</html>
